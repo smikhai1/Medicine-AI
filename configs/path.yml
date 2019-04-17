@@ -1,0 +1,13 @@
+dumps:
+  path: /mnt/hdd1/datasets/naive_data/blur_dataset/   # path to weights dir
+  weights: weights                  # name of weights dir
+  logs: logs                        # name of logs dir
+  name_save: tt                     # name to save models
+
+data:
+  path: /mnt/hdd1/datasets/naive_data/blur_dataset/  # path to data directory
+  train_images: image/   # dir to train images
+  train_masks: gt/    # dir to labels
+  test_images: images_test/  # dir to test
+  folds: folds.csv                  # validation folds
+  predictions_path: preds.csv       # predictions name

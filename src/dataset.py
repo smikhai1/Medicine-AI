@@ -1,3 +1,5 @@
+from load_function import get_path, get_list
+
 import cv2
 import os
 import torch
@@ -16,11 +18,9 @@ import gc
 import json
 
 class BaseDataset(Dataset):
-    def __init__(self, image_dir, ids, transform):
-        self.image_dir = image_dir
-        self.ids = ids
+    def __init__(self, path, transform):
+        self.ids = get_path(path)
         self.transform = transform
-
     def __len__(self):
         return len(self.ids)
 
@@ -29,17 +29,14 @@ class BaseDataset(Dataset):
 
 
 class TrainDataset(BaseDataset):
-    def __init__(self, image_dir, mask_dir, ids, transform):
-        super().__init__(image_dir, ids, transform)
-        self.transform = transform
-        self.ids = ids
-        self.image_dir = image_dir
-        self.mask_dir = mask_dir
+    def __init__(self, path, transform):
+        super().__init__(path, transform)
 
     def __getitem__(self, index):
         name = self.ids[index]
-        image = cv2.imread(os.path.join(self.image_dir, name))
-        mask = cv2.imread(os.path.join(self.mask_dir, f"{name[:-4]}.png"), 0)
+        gl = get_list(name)
+        image = gl[0]
+        mask = gl[1]
         if 'out_of_focus' not in name:
             mask *= 2
         return self.transform(image=image, mask=mask)

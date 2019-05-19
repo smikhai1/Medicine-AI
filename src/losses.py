@@ -37,3 +37,24 @@ class FocalLoss(nn.Module):
 
     def forward(self, input, target):
         return self.bce_with_logits((1 - torch.sigmoid(input)) ** self.gamma * F.logsigmoid(input), target)
+        
+class LossBinaryDice(nn.Module):
+    def __init__(self, dice_weight=1):
+        super(LossBinaryDice, self).__init__()        
+        self.nll_loss = nn.BCEWithLogitsLoss()
+        self.dice_weight = dice_weight
+
+    def forward(self, outputs, targets):
+        loss = self.nll_loss(outputs, targets)
+
+        if self.dice_weight:
+            smooth = 1e-500
+            target = (targets > 0.0).float()
+            prediction = F.sigmoid(outputs)
+#             prediction = (prediction>.5).float()
+            dice_part = 1 - (2*torch.sum(prediction * target) + smooth) / \
+                            (torch.sum(prediction) + torch.sum(target) + smooth)
+
+
+            loss += self.dice_weight * dice_part
+        return loss

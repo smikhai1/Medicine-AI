@@ -29,7 +29,6 @@ class Runner:
 
         self.model = self.model.to(device)
         self.loss = self.factory.make_loss()
-        #self.loss = nn.CrossEntropyLoss()
         self.metrics = Metrics(self.factory.make_metrics())
 
         self.current_stage = None
@@ -123,6 +122,7 @@ class Runner:
                     **{k: "{:.5f}".format(v / (i + 1)) for k, v in epoch_report.items()})
 
                 if is_train and i >= self.factory.params['steps_per_epoch']:
+                    print('Broken')
                     break
         return {key: value / len_loader for key, value in epoch_report.items()}
 

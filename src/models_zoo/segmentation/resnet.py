@@ -212,7 +212,7 @@ class MultiResnet18(nn.Module):
         self.pool = nn.MaxPool2d(2, 2)
         encoder = resnet18(pretrained=pretrained)
         self.relu = nn.ReLU(inplace=True)
-        self.conv1 = nn.Conv2d(1, 64, kernel_size=7)
+        self.conv1 = nn.Conv2d(1, num_filters, kernel_size=7)
         self.encoder = nn.ModuleList([
             nn.Sequential(
                 self.conv1,

@@ -14,7 +14,7 @@ train_params:
   loss: losses.CrossEntropyLoss
   loss_params: {}
   metrics: [losses.CrossEntropyLoss]
-  steps_per_epoch: 10
+  steps_per_epoch: 2500
   new_save: True
 #  weights:
 stages:

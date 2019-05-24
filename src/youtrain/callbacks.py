@@ -137,7 +137,7 @@ class ModelSaver(Callback):
                 if self.checkpoint:
                     self.save_checkpoint(epoch=epoch, path=self.current_path + '.pt', score=score)
                 else:
-                    torch.save(obj=deepcopy(self.runner.model.module), f=self.current_path + '.pt')
+                    torch.save(obj=deepcopy(self.runner.model), f=self.current_path + '.pt')
                     print(f'Model was saved at {self.save_name} with score {score}')
 
 

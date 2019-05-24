@@ -1,7 +1,5 @@
 import numpy as np
-from torch.autograd import Variable
 import torch.nn as nn
-from  albumentations import *
 import torch
 import pandas as pd
 from scipy.ndimage import label

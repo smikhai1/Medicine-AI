@@ -1,7 +1,5 @@
 import argparse
 from pathlib import Path
-
-import cv2
 import torch
 
 from dataset import TaskDataFactory
@@ -11,11 +9,11 @@ from youtrain.runner import Runner
 from youtrain.utils import set_global_seeds, get_config, get_last_save
 
 import warnings
-warnings.filterwarnings('ignore')
+#warnings.filterwarnings('ignore')
 
-cv2.ocl.setUseOpenCL(False)
-cv2.setNumThreads(0)
-torch.backends.cudnn.deterministic = True
+#cv2.ocl.setUseOpenCL(False)
+#cv2.setNumThreads(0)
+#torch.backends.cudnn.deterministic = True
 #torch.backends.cudnn.benchmark = True
 
 

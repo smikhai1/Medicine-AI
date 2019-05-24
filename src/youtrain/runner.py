@@ -27,8 +27,9 @@ class Runner:
         self.device = device
         self.model = self.factory.make_model()
 
-        self.model = nn.DataParallel(self.model).to(device)
-        self.loss = self.factory.make_loss().to(device)
+        self.model = self.model.to(device)
+        self.loss = self.factory.make_loss()
+        #self.loss = nn.CrossEntropyLoss()
         self.metrics = Metrics(self.factory.make_metrics())
 
         self.current_stage = None
@@ -130,7 +131,7 @@ class Runner:
         data = self.batch2device(data)
         images = data['image']
         labels = data['mask']
-        
+
         if is_train:
             self.optimizer.zero_grad()
 
@@ -150,4 +151,7 @@ class Runner:
         return report
 
     def batch2device(self, data):
-        return {k: v.to(self.device) for k, v in data.items()}
+        image = data['image'].to(self.device)
+        mask = data['mask'].to(torch.int64).to(self.device)
+        print(torch.unique(data['mask']))
+        return {'image': image, 'mask': mask}

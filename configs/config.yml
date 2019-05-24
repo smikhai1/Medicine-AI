@@ -1,6 +1,6 @@
 data_params:
   batch_size: 16
-  num_workers: 8
+  num_workers: 16
   augmentation_params:
     resize: 512
 
@@ -10,11 +10,11 @@ train_params:
   model_params:
     num_filters: 64
     pretrained: False
-    num_classes: 2
+    num_classes: 3
   loss: losses.CrossEntropyLoss
   loss_params: {}
   metrics: [losses.CrossEntropyLoss]
-  steps_per_epoch: 2500
+  steps_per_epoch: 10
   new_save: True
 #  weights:
 stages:

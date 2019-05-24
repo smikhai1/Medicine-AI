@@ -1,0 +1,80 @@
+[2019-05-24 11:34:23,790] Starting training with params:
+{'name': 'ternausNet/0', 'model': 'models_zoo.segmentation.unet.TernausNet', 'model_params': {'num_filters': 64, 'pretrained': False, 'num_classes': 2}, 'loss': 'losses.CrossEntropyLoss', 'loss_params': {}, 'metrics': ['losses.CrossEntropyLoss'], 'steps_per_epoch': 2500, 'new_save': True, 'name_save': 'tt_1', 'save_dir': PosixPath('trained_models/weights/ternausNet/0')}
+
+
+[2019-05-24 11:34:23,857] Starting stage:
+{'load_best': False, 'optimizer': 'Adam', 'optimizer_params': {'lr': 0.001}, 'scheduler': 'ReduceLROnPlateau', 'scheduler_params': {'patience': 5, 'factor': 0.5, 'min_lr': 1e-06}, 'epochs': 300, 'augmentation': 'mix_transform'}
+
+[2019-05-24 11:34:23,857] Epoch 0 | optimizer "Adam" | lr 0.001
+[2019-05-24 11:35:23,064] Starting training with params:
+{'name': 'ternausNet/0', 'model': 'models_zoo.segmentation.unet.TernausNet', 'model_params': {'num_filters': 64, 'pretrained': False, 'num_classes': 2}, 'loss': 'losses.CrossEntropyLoss', 'loss_params': {}, 'metrics': ['losses.CrossEntropyLoss'], 'steps_per_epoch': 2500, 'new_save': True, 'name_save': 'tt_1', 'save_dir': PosixPath('trained_models/weights/ternausNet/0')}
+
+
+[2019-05-24 11:35:23,082] Starting stage:
+{'load_best': False, 'optimizer': 'Adam', 'optimizer_params': {'lr': 0.001}, 'scheduler': 'ReduceLROnPlateau', 'scheduler_params': {'patience': 5, 'factor': 0.5, 'min_lr': 1e-06}, 'epochs': 300, 'augmentation': 'mix_transform'}
+
+[2019-05-24 11:35:23,082] Epoch 0 | optimizer "Adam" | lr 0.001
+[2019-05-24 11:35:57,513] Starting training with params:
+{'name': 'ternausNet/0', 'model': 'models_zoo.segmentation.unet.TernausNet', 'model_params': {'num_filters': 64, 'pretrained': False, 'num_classes': 2}, 'loss': 'losses.CrossEntropyLoss', 'loss_params': {}, 'metrics': ['losses.CrossEntropyLoss'], 'steps_per_epoch': 2500, 'new_save': True, 'name_save': 'tt_1', 'save_dir': PosixPath('trained_models/weights/ternausNet/0')}
+
+
+[2019-05-24 11:35:57,535] Starting stage:
+{'load_best': False, 'optimizer': 'Adam', 'optimizer_params': {'lr': 0.001}, 'scheduler': 'ReduceLROnPlateau', 'scheduler_params': {'patience': 5, 'factor': 0.5, 'min_lr': 1e-06}, 'epochs': 300, 'augmentation': 'mix_transform'}
+
+[2019-05-24 11:35:57,535] Epoch 0 | optimizer "Adam" | lr 0.001
+[2019-05-24 13:50:48,442] Starting training with params:
+{'name': 'ternausNet/0', 'model': 'models_zoo.segmentation.unet.TernausNet', 'model_params': {'num_filters': 64, 'pretrained': False, 'num_classes': 2}, 'loss': 'losses.CrossEntropyLoss', 'loss_params': {}, 'metrics': ['losses.CrossEntropyLoss'], 'steps_per_epoch': 2500, 'new_save': True, 'name_save': 'tt_1', 'save_dir': PosixPath('trained_models/weights/ternausNet/0')}
+
+
+[2019-05-24 13:50:48,493] Starting stage:
+{'load_best': False, 'optimizer': 'Adam', 'optimizer_params': {'lr': 0.001}, 'scheduler': 'ReduceLROnPlateau', 'scheduler_params': {'patience': 5, 'factor': 0.5, 'min_lr': 1e-06}, 'epochs': 300, 'augmentation': 'mix_transform'}
+
+[2019-05-24 13:50:48,493] Epoch 0 | optimizer "Adam" | lr 0.001
+[2019-05-24 13:52:46,435] Starting training with params:
+{'name': 'ternausNet/0', 'model': 'models_zoo.segmentation.unet.TernausNet', 'model_params': {'num_filters': 64, 'pretrained': False, 'num_classes': 2}, 'loss': 'losses.CrossEntropyLoss', 'loss_params': {}, 'metrics': ['losses.CrossEntropyLoss'], 'steps_per_epoch': 2500, 'new_save': True, 'name_save': 'tt_1', 'save_dir': PosixPath('trained_models/weights/ternausNet/0')}
+
+
+[2019-05-24 13:52:46,467] Starting stage:
+{'load_best': False, 'optimizer': 'Adam', 'optimizer_params': {'lr': 0.001}, 'scheduler': 'ReduceLROnPlateau', 'scheduler_params': {'patience': 5, 'factor': 0.5, 'min_lr': 1e-06}, 'epochs': 300, 'augmentation': 'mix_transform'}
+
+[2019-05-24 13:52:46,467] Epoch 0 | optimizer "Adam" | lr 0.001
+[2019-05-24 13:54:19,424] Starting training with params:
+{'name': 'ternausNet/0', 'model': 'models_zoo.segmentation.unet.TernausNet', 'model_params': {'num_filters': 64, 'pretrained': False, 'num_classes': 2}, 'loss': 'losses.CrossEntropyLoss', 'loss_params': {}, 'metrics': ['losses.CrossEntropyLoss'], 'steps_per_epoch': 10, 'new_save': True, 'name_save': 'tt_1', 'save_dir': PosixPath('trained_models/weights/ternausNet/0')}
+
+
+[2019-05-24 13:54:19,443] Starting stage:
+{'load_best': False, 'optimizer': 'Adam', 'optimizer_params': {'lr': 0.001}, 'scheduler': 'ReduceLROnPlateau', 'scheduler_params': {'patience': 5, 'factor': 0.5, 'min_lr': 1e-06}, 'epochs': 300, 'augmentation': 'mix_transform'}
+
+[2019-05-24 13:54:19,443] Epoch 0 | optimizer "Adam" | lr 0.001
+[2019-05-24 13:55:30,322] Starting training with params:
+{'name': 'ternausNet/0', 'model': 'models_zoo.segmentation.unet.TernausNet', 'model_params': {'num_filters': 64, 'pretrained': False, 'num_classes': 2}, 'loss': 'losses.CrossEntropyLoss', 'loss_params': {}, 'metrics': ['losses.CrossEntropyLoss'], 'steps_per_epoch': 10, 'new_save': True, 'name_save': 'tt_1', 'save_dir': PosixPath('trained_models/weights/ternausNet/0')}
+
+
+[2019-05-24 13:55:30,354] Starting stage:
+{'load_best': False, 'optimizer': 'Adam', 'optimizer_params': {'lr': 0.001}, 'scheduler': 'ReduceLROnPlateau', 'scheduler_params': {'patience': 5, 'factor': 0.5, 'min_lr': 1e-06}, 'epochs': 300, 'augmentation': 'mix_transform'}
+
+[2019-05-24 13:55:30,354] Epoch 0 | optimizer "Adam" | lr 0.001
+[2019-05-24 14:06:48,428] Starting training with params:
+{'name': 'ternausNet/0', 'model': 'models_zoo.segmentation.unet.TernausNet', 'model_params': {'num_filters': 64, 'pretrained': False, 'num_classes': 2}, 'loss': 'losses.CrossEntropyLoss', 'loss_params': {}, 'metrics': ['losses.CrossEntropyLoss'], 'steps_per_epoch': 10, 'new_save': True, 'name_save': 'tt_1', 'save_dir': PosixPath('trained_models/weights/ternausNet/0')}
+
+
+[2019-05-24 14:06:48,455] Starting stage:
+{'load_best': False, 'optimizer': 'Adam', 'optimizer_params': {'lr': 0.001}, 'scheduler': 'ReduceLROnPlateau', 'scheduler_params': {'patience': 5, 'factor': 0.5, 'min_lr': 1e-06}, 'epochs': 300, 'augmentation': 'mix_transform'}
+
+[2019-05-24 14:06:48,455] Epoch 0 | optimizer "Adam" | lr 0.001
+[2019-05-24 14:10:18,544] Starting training with params:
+{'name': 'ternausNet/0', 'model': 'models_zoo.segmentation.unet.TernausNet', 'model_params': {'num_filters': 64, 'pretrained': False, 'num_classes': 2}, 'loss': 'losses.CrossEntropyLoss', 'loss_params': {}, 'metrics': ['losses.CrossEntropyLoss'], 'steps_per_epoch': 10, 'new_save': True, 'name_save': 'tt_1', 'save_dir': PosixPath('trained_models/weights/ternausNet/0')}
+
+
+[2019-05-24 14:10:18,572] Starting stage:
+{'load_best': False, 'optimizer': 'Adam', 'optimizer_params': {'lr': 0.001}, 'scheduler': 'ReduceLROnPlateau', 'scheduler_params': {'patience': 5, 'factor': 0.5, 'min_lr': 1e-06}, 'epochs': 300, 'augmentation': 'mix_transform'}
+
+[2019-05-24 14:10:18,572] Epoch 0 | optimizer "Adam" | lr 0.001
+[2019-05-24 14:12:48,708] Starting training with params:
+{'name': 'ternausNet/0', 'model': 'models_zoo.segmentation.unet.TernausNet', 'model_params': {'num_filters': 64, 'pretrained': False, 'num_classes': 3}, 'loss': 'losses.CrossEntropyLoss', 'loss_params': {}, 'metrics': ['losses.CrossEntropyLoss'], 'steps_per_epoch': 10, 'new_save': True, 'name_save': 'tt_1', 'save_dir': PosixPath('trained_models/weights/ternausNet/0')}
+
+
+[2019-05-24 14:12:48,739] Starting stage:
+{'load_best': False, 'optimizer': 'Adam', 'optimizer_params': {'lr': 0.001}, 'scheduler': 'ReduceLROnPlateau', 'scheduler_params': {'patience': 5, 'factor': 0.5, 'min_lr': 1e-06}, 'epochs': 300, 'augmentation': 'mix_transform'}
+
+[2019-05-24 14:12:48,739] Epoch 0 | optimizer "Adam" | lr 0.001

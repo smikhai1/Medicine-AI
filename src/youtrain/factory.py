@@ -35,7 +35,6 @@ class Factory:
             **stage['scheduler_params'])
 
     def make_loss(self):
-        print(pydoc.locate(self.params['loss']))
         return pydoc.locate(self.params['loss'])(
             **self.params['loss_params'])
 

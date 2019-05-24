@@ -1,9 +1,28 @@
 import torch.nn as nn
 import torch.nn.functional as F
 import torch
-from torch.autograd import Variable
-import numpy as np
-import pydoc
+
+
+def dice_loss(input, target):
+    # for binary case!!!
+    # need to be extended
+
+    EPS = 1.0
+    dice_target = (target == 1).float()
+    dice_input = F.sigmoid(input)
+
+    intersection = (dice_target * dice_input).sum() + EPS
+    union = dice_target.sum() + dice_input.sum() + EPS
+    return 2.0 * intersection / union
+
+
+class DiceLoss(nn.Module):
+    def __init__(self):
+        super().__init__()
+
+    def forward(self, input, target):
+        return dice_loss(input, target)
+
 
 class CrossEntropyLoss(nn.Module):
     def __init__(self, weight=None, reduction='mean'):
@@ -11,7 +30,6 @@ class CrossEntropyLoss(nn.Module):
         self.loss = nn.CrossEntropyLoss(weight, reduction=reduction)
 
     def forward(self, logits, targets):
-        targets = targets.to(torch.cuda.LongTensor)
         return self.loss(logits, targets)
 
 
@@ -29,6 +47,7 @@ class BCELoss2d(nn.Module):
             loss += self.bce_loss(probs_flat, targets_flat)
         return loss
 
+
 class FocalLoss(nn.Module):
     def __init__(self, gamma=2):
         super().__init__()
@@ -37,7 +56,8 @@ class FocalLoss(nn.Module):
 
     def forward(self, input, target):
         return self.bce_with_logits((1 - torch.sigmoid(input)) ** self.gamma * F.logsigmoid(input), target)
-        
+
+
 class LossBinaryDice(nn.Module):
     def __init__(self, dice_weight=1):
         super(LossBinaryDice, self).__init__()        

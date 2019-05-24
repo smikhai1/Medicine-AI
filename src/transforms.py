@@ -74,6 +74,6 @@ def mix_transform(resize):
 
 def test_transform(resize):
     return Compose([
-        pre_transform(resize=resize),
+        #pre_transform(resize=resize),
         post_transform()]
     )

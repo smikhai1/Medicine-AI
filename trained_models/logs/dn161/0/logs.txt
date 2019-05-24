@@ -1,0 +1,40 @@
+[2019-05-23 19:28:19,328] Starting training with params:
+{'name': 'dn161/0', 'model': 'models.MultiSEDensenet161', 'model_params': {'num_filters': 16, 'pretrained': False, 'num_classes': 2}, 'loss': 'losses.CrossEntropyLoss', 'loss_params': {}, 'metrics': ['losses.CrossEntropyLoss'], 'steps_per_epoch': 2500, 'new_save': True, 'name_save': './tt_1', 'save_dir': PosixPath('trained_models/weights/dn161/0')}
+
+
+[2019-05-23 19:28:19,392] Starting stage:
+{'load_best': False, 'optimizer': 'Adam', 'optimizer_params': {'lr': 0.001}, 'scheduler': 'ReduceLROnPlateau', 'scheduler_params': {'patience': 5, 'factor': 0.5, 'min_lr': 1e-06}, 'epochs': 300, 'augmentation': 'mix_transform'}
+
+[2019-05-23 19:28:19,392] Epoch 0 | optimizer "Adam" | lr 0.001
+[2019-05-23 19:30:53,787] Starting training with params:
+{'name': 'dn161/0', 'model': 'models.MultiSEDensenet161', 'model_params': {'num_filters': 16, 'pretrained': False, 'num_classes': 2}, 'loss': 'losses.CrossEntropyLoss', 'loss_params': {}, 'metrics': ['losses.CrossEntropyLoss'], 'steps_per_epoch': 2500, 'new_save': True, 'name_save': './tt_1', 'save_dir': PosixPath('trained_models/weights/dn161/0')}
+
+
+[2019-05-23 19:30:53,819] Starting stage:
+{'load_best': False, 'optimizer': 'Adam', 'optimizer_params': {'lr': 0.001}, 'scheduler': 'ReduceLROnPlateau', 'scheduler_params': {'patience': 5, 'factor': 0.5, 'min_lr': 1e-06}, 'epochs': 300, 'augmentation': 'mix_transform'}
+
+[2019-05-23 19:30:53,819] Epoch 0 | optimizer "Adam" | lr 0.001
+[2019-05-23 20:05:42,066] Starting training with params:
+{'name': 'dn161/0', 'model': 'models.MultiSEDensenet161', 'model_params': {'num_filters': 16, 'pretrained': False, 'num_classes': 2}, 'loss': 'losses.CrossEntropyLoss', 'loss_params': {}, 'metrics': ['losses.CrossEntropyLoss'], 'steps_per_epoch': 2500, 'new_save': True, 'name_save': './tt_1', 'save_dir': PosixPath('trained_models/weights/dn161/0')}
+
+
+[2019-05-23 20:05:42,147] Starting stage:
+{'load_best': False, 'optimizer': 'Adam', 'optimizer_params': {'lr': 0.001}, 'scheduler': 'ReduceLROnPlateau', 'scheduler_params': {'patience': 5, 'factor': 0.5, 'min_lr': 1e-06}, 'epochs': 300, 'augmentation': 'mix_transform'}
+
+[2019-05-23 20:05:42,147] Epoch 0 | optimizer "Adam" | lr 0.001
+[2019-05-23 20:06:54,319] Starting training with params:
+{'name': 'dn161/0', 'model': 'models.MultiSEDensenet161', 'model_params': {'num_filters': 16, 'pretrained': False, 'num_classes': 2}, 'loss': 'losses.CrossEntropyLoss', 'loss_params': {}, 'metrics': ['losses.CrossEntropyLoss'], 'steps_per_epoch': 2500, 'new_save': True, 'name_save': './tt_1', 'save_dir': PosixPath('trained_models/weights/dn161/0')}
+
+
+[2019-05-23 20:06:54,350] Starting stage:
+{'load_best': False, 'optimizer': 'Adam', 'optimizer_params': {'lr': 0.001}, 'scheduler': 'ReduceLROnPlateau', 'scheduler_params': {'patience': 5, 'factor': 0.5, 'min_lr': 1e-06}, 'epochs': 300, 'augmentation': 'mix_transform'}
+
+[2019-05-23 20:06:54,350] Epoch 0 | optimizer "Adam" | lr 0.001
+[2019-05-23 20:08:53,734] Starting training with params:
+{'name': 'dn161/0', 'model': 'models.MultiSEDensenet161', 'model_params': {'num_filters': 16, 'pretrained': False, 'num_classes': 2}, 'loss': 'losses.CrossEntropyLoss', 'loss_params': {}, 'metrics': ['losses.CrossEntropyLoss'], 'steps_per_epoch': 2500, 'new_save': True, 'name_save': './tt_1', 'save_dir': PosixPath('trained_models/weights/dn161/0')}
+
+
+[2019-05-23 20:08:53,756] Starting stage:
+{'load_best': False, 'optimizer': 'Adam', 'optimizer_params': {'lr': 0.001}, 'scheduler': 'ReduceLROnPlateau', 'scheduler_params': {'patience': 5, 'factor': 0.5, 'min_lr': 1e-06}, 'epochs': 300, 'augmentation': 'mix_transform'}
+
+[2019-05-23 20:08:53,757] Epoch 0 | optimizer "Adam" | lr 0.001

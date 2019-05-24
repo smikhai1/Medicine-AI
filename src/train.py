@@ -16,7 +16,7 @@ warnings.filterwarnings('ignore')
 cv2.ocl.setUseOpenCL(False)
 cv2.setNumThreads(0)
 torch.backends.cudnn.deterministic = True
-torch.backends.cudnn.benchmark = True
+#torch.backends.cudnn.benchmark = True
 
 
 
@@ -40,8 +40,7 @@ def create_callbacks(name, dumps, name_save, monitor_metric):
             save_every=1,
             save_name=name_save,
             best_only=True,
-            threshold=0.7),
-        TensorBoard(log_dir)
+            threshold=0.7)
     ])
     return callbacks
 

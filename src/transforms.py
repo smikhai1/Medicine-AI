@@ -1,29 +1,74 @@
-from albumentations import *
-from albumentations.torch import ToTensor
-import numpy as np
-
+import torch
+from torchvision.transforms import Compose
 import random
 import numpy as np
 # from composition import Compose, OneOf, GrayscaleOrColor
 # import functional as F
-from imgaug import augmenters as iaa
+# from imgaug import augmenters as iaa
 from scipy.ndimage import label
+
+class ToTensor(object):
+
+    def __call__(self, sample):
+        image, mask = sample['image'], sample['mask']
+
+        if len(image.shape) != 3:
+            image = image[:, :, None] # add the channel dimension
+
+        image = image.transpose((2, 0, 1))
+
+        return {'image': torch.from_numpy(image).to(torch.float32),
+                'mask': torch.from_numpy(mask)
+                }
+
+class RandomCrop(object):
+    """Crop randomly the image in a sample.
+
+    Args:
+        output_size (tuple or int): Desired output size. If int, square crop
+            is made.
+    """
+
+    def __init__(self, output_size):
+        assert isinstance(output_size, (int, tuple))
+        if isinstance(output_size, int):
+            self.output_size = (output_size, output_size)
+        else:
+            assert len(output_size) == 2
+            self.output_size = output_size
+
+    def __call__(self, sample):
+        image, mask = sample['image'], sample['mask']
+
+        h, w = image.shape[:2]
+        new_h, new_w = self.output_size
+
+        top = np.random.randint(0, h - new_h)
+        left = np.random.randint(0, w - new_w)
+
+        image = image[top: top + new_h,
+                      left: left + new_w]
+
+        mask = mask[top: top + new_h, left: left + new_w]
+
+        return {'image': image, 'mask': mask}
+
 
 def pre_transform(resize):
     transforms = []
-    transforms.append(Resize(resize, resize))
+    transforms.append(RandomCrop(resize))
     return Compose(transforms)
 
 def post_transform():
     return Compose([
-        Normalize(
-            mean=(0.485, 0.456, 0.406),
-            std=(0.229, 0.224, 0.225)),
+        #Normalize(
+            #mean=(0.485, 0.456, 0.406),
+            #std=(0.229, 0.224, 0.225)),
         ToTensor()])
 
 def mix_transform(resize):
     return Compose([
-        pre_transform(resize=resize),
+        #pre_transform(resize=resize),
         post_transform()
     ])
 

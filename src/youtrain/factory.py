@@ -1,15 +1,14 @@
 import pydoc
 import torch
 
-
 class Factory:
     def __init__(self, params, **kwargs):
         self.params = params
         self.kwargs = kwargs
 
     def make_model(self):
-        model_name = self.params['model']
-        model = pydoc.locate(model_name)(**self.params['model_params'])
+        model_name = self.params['name']
+        model = pydoc.locate(self.params['model'])(**self.params['model_params'])
         if 'weights' not in self.params or self.params['weights'] is None:
             return model
         elif isinstance(self.params['weights'], str):
@@ -36,6 +35,7 @@ class Factory:
             **stage['scheduler_params'])
 
     def make_loss(self):
+        print(pydoc.locate(self.params['loss']))
         return pydoc.locate(self.params['loss'])(
             **self.params['loss_params'])
 

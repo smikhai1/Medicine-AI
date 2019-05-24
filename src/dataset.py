@@ -7,13 +7,7 @@ from pathlib import Path
 from torch.utils.data import Dataset, DataLoader
 from youtrain.factory import DataFactory
 from transforms import test_transform, mix_transform
-from tqdm import tqdm
-from albumentations.torch import ToTensor
-import matplotlib
-import matplotlib.pyplot as plt
-from torch.utils.data import Sampler
-import gc
-import json
+
 
 class BaseDataset(Dataset):
     def __init__(self, image_dir, ids, transform):
@@ -38,10 +32,10 @@ class TrainDataset(BaseDataset):
 
     def __getitem__(self, index):
         name = self.ids[index]
-        image = cv2.imread(os.path.join(self.image_dir, name, '.bmp'), 0)
-        mask = np.load(os.path.join(self.mask_dir, name, '.npz'))['arr_0']
+        image = cv2.imread(os.path.join(self.image_dir, name + '.bmp'), 0)
+        mask = np.load(os.path.join(self.mask_dir, name + '.npz'))['arr_0']
 
-        return self.transform(image=image, mask=mask)
+        return self.transform({'image': image, 'mask': mask})
 
 class TestDataset(BaseDataset):
     def __init__(self, image_dir, ids, transform):

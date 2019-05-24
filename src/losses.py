@@ -6,12 +6,12 @@ import numpy as np
 import pydoc
 
 class CrossEntropyLoss(nn.Module):
-    def __init__(self, weight=None, size_average=True):
+    def __init__(self, weight=None, reduction='mean'):
         super(CrossEntropyLoss, self).__init__()
-        self.loss = nn.CrossEntropyLoss(weight, size_average)
+        self.loss = nn.CrossEntropyLoss(weight, reduction=reduction)
 
     def forward(self, logits, targets):
-        targets = targets.type(torch.cuda.LongTensor).view(-1)
+        targets = targets.to(torch.cuda.LongTensor)
         return self.loss(logits, targets)
 
 

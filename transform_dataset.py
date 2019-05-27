@@ -8,7 +8,7 @@ from argparse import ArgumentParser
 
 def convert_range(image, max_value, min_value):
 
-    image = np.clip(np.round(image - min_value / (max_value - min_value) * 255), 0, 255).astype(np.uint8)
+    image = np.clip(np.round((image - min_value) / (max_value - min_value) * 255), 0, 255).astype(np.uint8)
 
     return image
 
@@ -52,7 +52,8 @@ def transform_data(source, destination, format='bmp'):
             idx_str = get_correct_idx(idx, len(str(len(img_paths))))
             slice_n_str = get_correct_idx(slice_n, len(str(num_slices)))
             cv2.imwrite(os.path.join(destination, 'images', f'{idx_str}_{slice_n_str}.{format}'), img_slice)
-            cv2.imwrite(os.path.join(destination, 'masks', f'{idx_str}_{slice_n_str}.{format}'), mask_slice)
+            np.savez(os.path.join(destination, 'masks', f'{idx_str}_{slice_n_str}'), mask_slice)
+
 
 def split_data(path, split_ratio=0.15):
     """
@@ -64,17 +65,19 @@ def split_data(path, split_ratio=0.15):
     :param split_ratio: ratio between train and validation set, float
     :return: None
     """
-
-    img_names = np.array(os.listdir(path))
+    img_names = sorted(os.listdir(path + '/images'))
+    img_names = list(map(lambda x: x.split('.')[0], img_names))
+    img_names = np.array(img_names).reshape(-1, 1)
     m = len(img_names)
-    folds = np.zeros(m)
+    folds = np.zeros((m, 1), dtype=np.uint8)
     val_idxs = np.random.choice(m, size=int(split_ratio * m), replace=False)
     folds[val_idxs] = 1
 
-    df = pd.DataFrame([img_names, folds], columns=['ImageId', 'fold'])
+    data = np.hstack((img_names, folds))
+    df = pd.DataFrame(data, columns=['ImageId', 'fold'])
+    df['fold'] = pd.to_numeric(df['fold'])
     df.to_csv(os.path.join(path, 'folds.csv'), sep='\t')
-
-
+    return df
 
 
 if __name__ == '__main__':

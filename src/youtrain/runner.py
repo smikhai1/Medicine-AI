@@ -27,7 +27,7 @@ class Runner:
         self.device = device
         self.model = self.factory.make_model()
 
-        self.model = self.model.to(device)
+        self.model = nn.DataParallel(self.model).to(device)
         self.loss = self.factory.make_loss()
         self.metrics = Metrics(self.factory.make_metrics())
 
@@ -122,7 +122,6 @@ class Runner:
                     **{k: "{:.5f}".format(v / (i + 1)) for k, v in epoch_report.items()})
 
                 if is_train and i >= self.factory.params['steps_per_epoch']:
-                    print('Broken')
                     break
         return {key: value / len_loader for key, value in epoch_report.items()}
 
@@ -153,5 +152,4 @@ class Runner:
     def batch2device(self, data):
         image = data['image'].to(self.device)
         mask = data['mask'].to(torch.int64).to(self.device)
-        print(torch.unique(data['mask']))
         return {'image': image, 'mask': mask}

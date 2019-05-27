@@ -1,19 +1,19 @@
 data_params:
-  batch_size: 16
+  batch_size: 32
   num_workers: 16
   augmentation_params:
-    resize: 512
+    resize: 256
 
 train_params:
   name: ternausNet
   model: models_zoo.segmentation.unet.TernausNet
   model_params:
     num_filters: 64
-    pretrained: False
+    pretrained: True
     num_classes: 3
-  loss: losses.CrossEntropyLoss
-  loss_params: {}
-  metrics: [losses.CrossEntropyLoss]
+  loss: losses.CrossEntropyDiceLoss
+  loss_params: {dice_weight: 0.7}
+  metrics: [losses.DiceLoss]
   steps_per_epoch: 2500
   new_save: True
 #  weights:

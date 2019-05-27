@@ -53,10 +53,43 @@ class RandomCrop(object):
 
         return {'image': image, 'mask': mask}
 
+class CenterCrop(object):
+
+    def __init__(self, output_size):
+        assert isinstance(output_size, (int, tuple))
+        if isinstance(output_size, int):
+            self.output_size = (output_size, output_size)
+        else:
+            assert len(output_size) == 2
+            self.output_size = output_size
+
+    def __call__(self, sample):
+        image, mask = sample['image'], sample['mask']
+
+        h, w = image.shape[:2]
+        new_h, new_w = self.output_size
+        centr_h, centr_w = h // 2, w // 2
+
+        start_h = centr_h - new_h//2
+        end_h = centr_h + new_h//2
+
+        start_w = centr_w - new_w // 2
+        end_w = centr_w + new_w // 2
+
+
+        image = image[start_h:end_h,
+                      start_w:end_w
+                     ]
+
+        mask = mask[start_h:end_h,
+                    start_w:end_w
+                   ]
+
+        return {'image': image, 'mask': mask}
 
 def pre_transform(resize):
     transforms = []
-    transforms.append(RandomCrop(resize))
+    transforms.append(CenterCrop(resize))
     return Compose(transforms)
 
 def post_transform():
@@ -68,12 +101,12 @@ def post_transform():
 
 def mix_transform(resize):
     return Compose([
-        #pre_transform(resize=resize),
+        pre_transform(resize=resize),
         post_transform()
     ])
 
 def test_transform(resize):
     return Compose([
-        #pre_transform(resize=resize),
+        pre_transform(resize=resize),
         post_transform()]
     )

@@ -78,3 +78,23 @@
 {'load_best': False, 'optimizer': 'Adam', 'optimizer_params': {'lr': 0.001}, 'scheduler': 'ReduceLROnPlateau', 'scheduler_params': {'patience': 5, 'factor': 0.5, 'min_lr': 1e-06}, 'epochs': 300, 'augmentation': 'mix_transform'}
 
 [2019-05-24 14:12:48,739] Epoch 0 | optimizer "Adam" | lr 0.001
+[2019-05-24 15:41:09,716] Starting training with params:
+{'name': 'ternausNet/0', 'model': 'models_zoo.segmentation.unet.TernausNet', 'model_params': {'num_filters': 64, 'pretrained': False, 'num_classes': 3}, 'loss': 'losses.CrossEntropyLoss', 'loss_params': {}, 'metrics': ['losses.DiceLoss'], 'steps_per_epoch': 2500, 'new_save': True, 'name_save': 'tt_1', 'save_dir': PosixPath('trained_models/weights/ternausNet/0')}
+
+
+[2019-05-24 15:41:30,792] Starting training with params:
+{'name': 'ternausNet/0', 'model': 'models_zoo.segmentation.unet.TernausNet', 'model_params': {'num_filters': 64, 'pretrained': False, 'num_classes': 3}, 'loss': 'losses.CrossEntropyLoss', 'loss_params': {}, 'metrics': ['losses.DiceLoss'], 'steps_per_epoch': 2500, 'new_save': True, 'name_save': 'tt_1', 'save_dir': PosixPath('trained_models/weights/ternausNet/0')}
+
+
+[2019-05-24 15:41:30,842] Starting stage:
+{'load_best': False, 'optimizer': 'Adam', 'optimizer_params': {'lr': 0.001}, 'scheduler': 'ReduceLROnPlateau', 'scheduler_params': {'patience': 5, 'factor': 0.5, 'min_lr': 1e-06}, 'epochs': 300, 'augmentation': 'mix_transform'}
+
+[2019-05-24 15:41:30,842] Epoch 0 | optimizer "Adam" | lr 0.001
+[2019-05-24 15:41:58,273] Starting training with params:
+{'name': 'ternausNet/0', 'model': 'models_zoo.segmentation.unet.TernausNet', 'model_params': {'num_filters': 64, 'pretrained': False, 'num_classes': 3}, 'loss': 'losses.CrossEntropyLoss', 'loss_params': {}, 'metrics': ['losses.DiceLoss'], 'steps_per_epoch': 10, 'new_save': True, 'name_save': 'tt_1', 'save_dir': PosixPath('trained_models/weights/ternausNet/0')}
+
+
+[2019-05-24 15:41:58,298] Starting stage:
+{'load_best': False, 'optimizer': 'Adam', 'optimizer_params': {'lr': 0.001}, 'scheduler': 'ReduceLROnPlateau', 'scheduler_params': {'patience': 5, 'factor': 0.5, 'min_lr': 1e-06}, 'epochs': 300, 'augmentation': 'mix_transform'}
+
+[2019-05-24 15:41:58,298] Epoch 0 | optimizer "Adam" | lr 0.001

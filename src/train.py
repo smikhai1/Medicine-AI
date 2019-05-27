@@ -9,14 +9,12 @@ from youtrain.runner import Runner
 from youtrain.utils import set_global_seeds, get_config, get_last_save
 
 import warnings
-#warnings.filterwarnings('ignore')
+warnings.filterwarnings('ignore')
 
 #cv2.ocl.setUseOpenCL(False)
 #cv2.setNumThreads(0)
 #torch.backends.cudnn.deterministic = True
 #torch.backends.cudnn.benchmark = True
-
-
 
 def parse_args():
     parser = argparse.ArgumentParser()
@@ -67,7 +65,7 @@ def main():
     factory = Factory(config['train_params'])
 
     data_factory = TaskDataFactory(config['data_params'], paths['data'], fold=args.fold)
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
     callbacks = create_callbacks(config['train_params']['name'], paths['dumps'], paths["dumps"]["name_save"], config['train_params']['metrics'][-1])
 

@@ -1,5 +1,5 @@
 dumps:
-  path: ./trained_models   # path to weights dir
+  path: ./trained_models   # path to weights dirls
   weights: weights                  # name of weights dir
   logs: logs                        # name of logs dir
   name_save: tt                     # name to save models

@@ -85,7 +85,7 @@ class TaskDataFactory(DataFactory):
             dataset=dataset,
             batch_size=self.params['batch_size'],
             shuffle=is_train,
-            #drop_last=is_train,
+            drop_last=is_train,
             num_workers=self.params['num_workers'],
             pin_memory=torch.cuda.is_available(),
         )

@@ -3,13 +3,15 @@ import torch.nn.functional as F
 import torch
 
 
-def dice_loss(input, target):
+def dice_loss(input, target, num_classes=3):
     # for binary case!!!
     # need to be extended
+    EPS = 1e-10
+    dice_target = F.one_hot(target, num_classes=3).to(torch.float32)[:, :, :, 1:]
+    dice_input = F.softmax(input, dim=1)[:, 1:, :, :]
+    dice_input = torch.transpose(dice_input, 1, 3)
 
-    EPS = 1.0
-    dice_target = (target == 1).float()
-    dice_input = F.sigmoid(input)
+
 
     intersection = (dice_target * dice_input).sum() + EPS
     union = dice_target.sum() + dice_input.sum() + EPS
@@ -20,8 +22,8 @@ class DiceLoss(nn.Module):
     def __init__(self):
         super().__init__()
 
-    def forward(self, input, target):
-        return dice_loss(input, target)
+    def forward(self, input, target, num_classes=3):
+        return dice_loss(input, target, num_classes)
 
 
 class CrossEntropyLoss(nn.Module):
@@ -32,6 +34,15 @@ class CrossEntropyLoss(nn.Module):
     def forward(self, logits, targets):
         return self.loss(logits, targets)
 
+class CrossEntropyDiceLoss(nn.Module):
+
+    def __init__(self, dice_weight=1.0):
+        super(CrossEntropyDiceLoss, self).__init__()
+        self.dice_weight = dice_weight
+        self.ce_loss = CrossEntropyLoss()
+
+    def forward(self, logits, targets):
+        return self.ce_loss(logits, targets) + self.dice_weight * (1 - dice_loss(logits, targets))
 
 class BCELoss2d(nn.Module):
     def __init__(self, weight=None, size_average=True):

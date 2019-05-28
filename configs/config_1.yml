@@ -1,19 +1,19 @@
 data_params:
-  batch_size: 42
+  batch_size: 32
   num_workers: 16
   augmentation_params:
-    resize: 128
+    resize: 256
 
 train_params:
-  name: rn34_GenDice_Full
+  name: rn34_1
   model: models_zoo.segmentation.resnet.MultiResnet34
   model_params:
     num_filters: 64
     pretrained: True
     num_classes: 3
-  loss: losses.GeneralizedDiceLoss2D
-  loss_params: {}
-  metrics: [losses.BodyDiceScore, losses.TumorDiceScore]
+  loss: losses.CrossEntropyDiceLossComb
+  loss_params: {dice_weight: 0.7}
+  metrics: [losses.BodyDiceScore, losses.TumorDiceScore, losses.DiceScoreComb]
   steps_per_epoch: 1000
   new_save: True
 #  weights:

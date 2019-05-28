@@ -14,7 +14,7 @@ tqdm.monitor_interval = 0
 class Metrics:
     def __init__(self, functions):
         self.functions = functions
-        self.best_score = float('inf')
+        self.best_score = 0.0
         self.best_epoch = 0
         self.train_metrics = {}
         self.val_metrics = {}

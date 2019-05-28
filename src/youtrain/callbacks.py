@@ -123,7 +123,7 @@ class ModelSaver(Callback):
         score = float(self.metrics.val_metrics[self.metric_name])
         need_save = not self.best_only
         if epoch % self.save_every == 0:
-            if score < self.metrics.best_score:
+            if score > self.metrics.best_score:
                 self.metrics.best_score = score
                 self.metrics.best_epoch = epoch
                 need_save = True
@@ -131,7 +131,7 @@ class ModelSaver(Callback):
             if need_save:
                 if os.path.exists(self.current_path + '.pt'):
                     current_score = float(self.current_path.split('_')[-1])
-                    if current_score < self.threshold:
+                    if current_score > self.threshold:
                         os.remove(self.current_path + '.pt')
                 self.current_path = '_'.join(self.current_path.split('_')[:-1]) + '_{:.5f}'.format(abs(self.metrics.best_score))
                 if self.checkpoint:

@@ -1,0 +1,4 @@
+[2019-05-27 12:23:56,040] Starting training with params:
+{'name': 'ternausNet/1', 'model': 'models_zoo.segmentation.resnet.MultiResnet34', 'model_params': {'num_filters': 64, 'pretrained': True, 'num_classes': 3}, 'loss': 'losses.CrossEntropyDiceLoss', 'loss_params': {'dice_weight': 0.7}, 'metrics': ['losses.DiceLoss'], 'steps_per_epoch': 2500, 'new_save': True, 'name_save': 'tt_1', 'save_dir': PosixPath('trained_models/weights/ternausNet/1')}
+
+

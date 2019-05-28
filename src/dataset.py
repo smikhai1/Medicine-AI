@@ -92,7 +92,7 @@ class TaskDataFactory(DataFactory):
     @property
     def folds(self):
         if self._folds is None:
-            self._folds = pd.read_csv(self.data_path / self.paths['folds'])
+            self._folds = pd.read_csv(self.data_path / self.paths['folds'], sep='\t')
         return self._folds
 
     @property

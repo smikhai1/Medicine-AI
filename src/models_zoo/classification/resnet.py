@@ -7,7 +7,7 @@ __all__ = ['ResNet', 'resnet18', 'resnet34', 'resnet50', 'resnet101',
 
 model_urls = {
     'resnet18': 'https://download.pytorch.org/models_zoo/resnet18-5c106cde.pth',
-    'resnet34': 'https://download.pytorch.org/models_zoo/resnet34-333f7ec4.pth',
+    'resnet34': 'https://download.pytorch.org/models/resnet34-333f7ec4.pth',
     'resnet50': 'https://download.pytorch.org/models_zoo/resnet50-19c8e357.pth',
     'resnet101': 'https://download.pytorch.org/models_zoo/resnet101-5d3b4d8f.pth',
     'resnet152': 'https://download.pytorch.org/models_zoo/resnet152-b121ed2d.pth',

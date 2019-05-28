@@ -162,7 +162,8 @@ class MultiResnet34(nn.Module):
 
         self.encoder = nn.ModuleList([
             nn.Sequential(
-                encoder.conv1,
+                #encoder.conv1,
+                nn.Conv2d(1, 64, kernel_size=7, stride=2, padding=3, bias=False),
                 encoder.bn1,
                 encoder.relu,
                 self.pool),

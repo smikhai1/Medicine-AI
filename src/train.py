@@ -65,7 +65,7 @@ def main():
     factory = Factory(config['train_params'])
 
     data_factory = TaskDataFactory(config['data_params'], paths['data'], fold=args.fold)
-    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     callbacks = create_callbacks(config['train_params']['name'], paths['dumps'], paths["dumps"]["name_save"], config['train_params']['metrics'][-1])
 

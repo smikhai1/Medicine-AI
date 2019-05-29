@@ -1,22 +1,22 @@
 data_params:
-  batch_size: 16
+  batch_size: 64
   num_workers: 16
   augmentation_params:
-    resize: 320
+    resize: 256
 
 train_params:
-  name: rn18
-  model: models.MultiResnet18
+  name: rn34_CrossEntropyLoss
+  model: models_zoo.segmentation.resnet.MultiResnet34
   model_params:
-    num_filters: 16
+    num_filters: 64
     pretrained: True
-    num_classes: 2
-  loss: losses.BCELoss2d
+    num_classes: 3
+  loss: losses.CrossEntropyLoss
   loss_params: {}
-  metrics: [losses.BCELoss2d]
+  metrics: [losses.CrossEntropyLoss]
   steps_per_epoch: 2500
   new_save: True
-#  weights:
+  weights: ./trained_models/weights/rn34_CrossEntropyWeightedLoss/1/tt_1_0.04521.pt
 stages:
 -
   load_best: False

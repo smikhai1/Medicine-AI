@@ -41,13 +41,14 @@ class TestDataset(BaseDataset):
     def __init__(self, image_dir, ids, transform):
         super().__init__(image_dir, ids, transform)
         self.transform = transform
-        self.ids = ids
         self.image_dir = image_dir
+        self.ids = sorted(os.listdir(self.image_dir))
 
     def __getitem__(self, index):
         name = self.ids[index]
-        image = cv2.imread(os.path.join(self.image_dir, name))
-        return self.transform(image=image)['image']
+        image = cv2.imread(os.path.join(self.image_dir, name), 0)
+        mask = np.copy(image)
+        return self.transform({'image': image, 'mask': mask})
 
 
 class TaskDataFactory(DataFactory):

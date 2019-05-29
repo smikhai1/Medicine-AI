@@ -9,19 +9,18 @@ import torch
 
 from tqdm import tqdm
 from dataset import TestDataset
-from inference import PytorchInference
 from transforms import test_transform
 from torch.utils.data import DataLoader
 from youtrain.utils import set_global_seeds, get_config, get_last_save
 import torchvision.transforms.functional as F
 
-import warnings
-warnings.filterwarnings('ignore')
-
-cv2.ocl.setUseOpenCL(False)
-cv2.setNumThreads(0)
-torch.backends.cudnn.deterministic = True
-torch.backends.cudnn.benchmark = True
+#import warnings
+#warnings.filterwarnings('ignore')
+#
+#cv2.ocl.setUseOpenCL(False)
+#cv2.setNumThreads(0)
+#torch.backends.cudnn.deterministic = True
+#torch.backends.cudnn.benchmark = True
 
 class PytorchInference:
     def __init__(self, device, activation='sigmoid'):
@@ -45,7 +44,7 @@ class PytorchInference:
 
         with torch.no_grad():
             for data in loader:
-                images = data.to(self.device)
+                images = data['image'].to(self.device)
                 predictions = model(images)
                 for prediction in predictions:
                     prediction = np.moveaxis(self.to_numpy(prediction), 0, -1)
@@ -67,6 +66,7 @@ def main():
     model.load_state_dict(torch.load(params['weights'])['state_dict'])
     paths = paths['data']
 
+
     dataset = TestDataset(
             image_dir=Path(paths['path']) / Path(paths['test_images']),
             ids=None,
@@ -74,7 +74,7 @@ def main():
 
     loader = DataLoader(
             dataset=dataset,
-            batch_size=16,
+            batch_size=1,
             shuffle=False,
             drop_last=False,
             num_workers=16,
@@ -83,9 +83,8 @@ def main():
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     inferencer = PytorchInference(device)
 
-    for pred in tqdm(inferencer.predict(model, loader), total=len(dataset)):
-        pass
-
+    for pred, name in tqdm(zip(inferencer.predict(model, loader), dataset.ids), total=len(dataset)):
+        np.savez(Path(paths['path']) / Path(paths['predictions_path']) / f'{name}.npz', pred)
 
 if __name__== '__main__':
     main()

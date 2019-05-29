@@ -2,23 +2,9 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch
 
-
-def dice_score_combined(input, target, num_classes=3):
-
-    EPS = 1e-10
-
-    dice_target = F.one_hot(target, num_classes=3).to(torch.float32)[:, :, :, 1:]
-    dice_input = F.softmax(input, dim=1)[:, 1:, :, :]
-    dice_input = torch.transpose(dice_input, 1, 3)
-
-    intersection = (dice_target * dice_input).sum()
-    union = dice_target.sum() + dice_input.sum() + EPS
-
-    return 2.0 * intersection / union
-
 def dice_score(input, target, channel, num_classes=3):
     """
-    Dice score computed separately for a body part and the tumor in it
+    Dice score computed separately for a specified channel
 
     :param input:
     :param target:
@@ -31,14 +17,15 @@ def dice_score(input, target, channel, num_classes=3):
     predict = F.softmax(input, dim=1)
 
     mask = one_hot_mask[:, :, :, channel]
-    predict = torch.transpose(predict, 1, 3)[:, :, :, channel]
+    predict = predict[:, channel, :, :]
 
-    intersection = torch.sum(mask * predict, dim=(1, 2))
-    union = torch.sum(mask, dim=(1, 2)) + torch.sum(predict, dim=(1, 2))
+    intersection = torch.sum(mask * predict)
+    union = torch.sum(mask) + torch.sum(predict)
 
-    dice_score = 2 * torch.mean((intersection + EPS) / (union + EPS))
+    dice_score = 2 * ((intersection + EPS) / (union + EPS))
 
     return dice_score
+
 
 class DiceScore(nn.Module):
 
@@ -49,13 +36,11 @@ class DiceScore(nn.Module):
     def forward(self, input, target, num_classes=3):
         return dice_score(input, target, self.channel, num_classes)
 
-class DiceScoreComb(nn.Module):
+class BackgroundDiceScore(DiceScore):
     # for metrics
-    def __init__(self):
-        super().__init__()
-
-    def forward(self, input, target, num_classes=3):
-        return dice_score_combined(input, target, num_classes=3)
+    def __init__(self, channel=0):
+        super().__init__(channel)
+        self.channel = channel
 
 class BodyDiceScore(DiceScore):
     # for metrics
@@ -63,12 +48,13 @@ class BodyDiceScore(DiceScore):
         super().__init__(channel)
         self.channel = channel
 
-
 class TumorDiceScore(DiceScore):
     # for metrics
     def __init__(self, channel=2):
         super().__init__(channel)
         self.channel = channel
+
+
 
 class CrossEntropyDiceLoss(nn.Module):
 
@@ -76,8 +62,7 @@ class CrossEntropyDiceLoss(nn.Module):
         super(CrossEntropyDiceLoss, self).__init__()
         self.body_weight = body_weight
         self.tumor_weight = tumor_weight
-        self.class_weights = torch.tensor([1.0, 2.0, 2.0], dtype=torch.float32, device='cuda')
-        self.ce_loss = CrossEntropyLoss(weight=self.class_weights)
+        self.ce_loss = CrossEntropyLoss()
         self.body_dice_score = DiceScore(channel=1)
         self.tumor_dice_score = DiceScore(channel=2)
 
@@ -87,25 +72,13 @@ class CrossEntropyDiceLoss(nn.Module):
                + self.tumor_weight * (1 - self.tumor_dice_score(logits, targets))
 
 
-class CrossEntropyDiceLossComb(nn.Module):
-
-    def __init__(self, dice_weight=1.0):
-        super(CrossEntropyDiceLossComb, self).__init__()
-        self.dice_weight = dice_weight
-        self.ce_loss = CrossEntropyLoss()
-
-
-    def forward(self, logits, targets):
-        return self.ce_loss(logits, targets) \
-               + self.dice_weight * (1 - dice_score_combined(logits, targets))
-
-
-
 class GeneralizedDiceLoss2D(nn.Module):
 
     def __init__(self):
         """
         Implementation of Generalized Dice Loss from https://arxiv.org/pdf/1707.03237.pdf
+
+        Doesn't work!
         """
         super(GeneralizedDiceLoss2D, self).__init__()
 
@@ -118,34 +91,94 @@ class GeneralizedDiceLoss2D(nn.Module):
         :param masks: tensor of shape batch_size x d1 x d2 ... x dk consists of class labels (integers) of each element
         :return:
         """
-
         EPS = 1e-10
 
         one_hot_masks = F.one_hot(masks, num_classes=3).to(torch.float32)
         probas = F.softmax(logits, dim=1)
-        probas = torch.transpose(probas, 1, 3)
+        probas = probas.permute(0, 2, 3, 1)
 
-        weights = (torch.sum(one_hot_masks, dim=(1, 2)))/ (torch.sum(one_hot_masks, dim=(1, 2, 3), keepdim=True) + EPS)
+        #weights = (torch.sum(one_hot_masks, dim=(1, 2)))/ (torch.sum(one_hot_masks, dim=(1, 2, 3), keepdim=True) + EPS)
 
-
-        intersection = torch.sum(torch.sum(probas * one_hot_masks, dim=(1, 2)) * weights)
-        union = torch.sum(torch.sum(probas + one_hot_masks, dim=(1, 2)) * weights)
-
-        dice_loss = 1 - 2 * (intersection + EPS) / (union + EPS)
+        intersection = torch.sum(probas * one_hot_masks)#, dim=(1, 2)) * weights
+        union = torch.sum(probas + one_hot_masks)#, dim=(1, 2)) * weights
+        dice_loss =  1 - 2 * (intersection + EPS) / (union + EPS)
 
         return dice_loss
 
-######################################
+
+class MeanDiceLoss2D(nn.Module):
+
+    def __init__(self):
+        """
+        Doesn't work!
+        """
+        super(MeanDiceLoss2D, self).__init__()
+
+    def forward(self, logits, masks):
+        """
+        Computes Generalized Dice Loss
+
+        :param logits: tensor of shape batch_size x c x d1 x d2 ... x dk , where c is the number of classes, k is the
+                       number of image dimensions
+        :param masks: tensor of shape batch_size x d1 x d2 ... x dk consists of class labels (integers) of each element
+        :return:
+        """
+        EPS = 1e-10
+
+        one_hot_masks = F.one_hot(masks, num_classes=3).to(torch.float32)
+        probas = F.softmax(logits, dim=1)
+        probas = probas.permute(0, 2, 3, 1)
+
+        intersection = torch.sum(probas * one_hot_masks, dim=(1, 2))
+        union = torch.sum(probas + one_hot_masks, dim=(1, 2))
+        dice_loss = 1 - 2 * (intersection + EPS) / (union + EPS)
+
+        return torch.mean(dice_loss)
+
+
 
 
 class CrossEntropyLoss(nn.Module):
     def __init__(self, weight=None, reduction='mean'):
         super(CrossEntropyLoss, self).__init__()
-        self.loss = nn.CrossEntropyLoss(weight, reduction=reduction)
+        if weight:
+            self.weight = torch.tensor(weight, device='cuda')
+        else:
+            self.weight = None
+
+        self.loss = nn.CrossEntropyLoss(self.weight, reduction=reduction)
 
     def forward(self, logits, targets):
         return self.loss(logits, targets)
 
+
+class TverskyLoss2D(nn.Module):
+
+    def __init__(self, alpha=0.5, beta=0.5):
+        super(TverskyLoss2D, self).__init__()
+        self.alpha = alpha
+        self.beta = beta
+
+    def forward(self, logits, masks):
+
+        one_hot_masks = F.one_hot(masks, num_classes=3).to(torch.float32)
+        probas = F.softmax(logits, dim=1)
+        probas = probas.permute(0, 2, 3, 1)
+
+        ones = torch.ones_like(one_hot_masks)
+        p0 = probas
+        p1 = ones - probas
+        g0 = one_hot_masks
+        g1 = ones - one_hot_masks
+
+        num = torch.sum(p0 * g0, dim=(0, 1, 2))
+        denum = num + self.alpha * torch.sum(p0 * g1, dim=(0, 1, 2)) + self.beta * torch.sum(p1 * g0, dim=(0, 1, 2))
+
+        T = torch.sum(num / denum)
+
+        return 3 - T
+
+######################################
 class BCELoss2d(nn.Module):
     def __init__(self, weight=None, size_average=True):
         super(BCELoss2d, self).__init__()

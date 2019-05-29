@@ -47,7 +47,7 @@ class TestDataset(BaseDataset):
     def __getitem__(self, index):
         name = self.ids[index]
         image = cv2.imread(os.path.join(self.image_dir, name), 0)
-        mask = np.copy(image)
+        mask = np.copy(image) # kostyl :)
         return self.transform({'image': image, 'mask': mask})
 
 

@@ -1,0 +1,40 @@
+[2019-05-29 09:08:59,060] Starting training with params:
+{'name': 'rn34_TverskyLoss/1', 'model': 'models_zoo.segmentation.resnet.MultiResnet34', 'model_params': {'num_filters': 64, 'pretrained': True, 'num_classes': 3}, 'loss': 'losses.TverskyLoss2D', 'loss_params': {'alpha': 0.6, 'beta': 0.4}, 'metrics': ['losses.BodyDiceScore', 'losses.TumorDiceScore'], 'steps_per_epoch': 1000, 'new_save': True, 'name_save': 'tt_1', 'save_dir': PosixPath('trained_models/weights/rn34_TverskyLoss/1')}
+
+
+[2019-05-29 09:08:59,226] Starting stage:
+{'load_best': False, 'optimizer': 'Adam', 'optimizer_params': {'lr': 0.001}, 'scheduler': 'ReduceLROnPlateau', 'scheduler_params': {'patience': 5, 'factor': 0.5, 'min_lr': 1e-06}, 'epochs': 300, 'augmentation': 'mix_transform'}
+
+[2019-05-29 09:08:59,226] Epoch 0 | optimizer "Adam" | lr 0.001
+[2019-05-29 09:14:59,468] Train metrics: loss: nan | losses.BodyDiceScore: nan | losses.TumorDiceScore: nan | grad: nan
+[2019-05-29 09:14:59,468] Valid metrics: loss: nan | losses.BodyDiceScore: nan | losses.TumorDiceScore: nan
+
+[2019-05-29 09:14:59,468] Epoch 1 | optimizer "Adam" | lr 0.001
+[2019-05-29 09:20:35,912] Train metrics: loss: nan | losses.BodyDiceScore: nan | losses.TumorDiceScore: nan | grad: nan
+[2019-05-29 09:20:35,912] Valid metrics: loss: nan | losses.BodyDiceScore: nan | losses.TumorDiceScore: nan
+
+[2019-05-29 09:20:35,912] Epoch 2 | optimizer "Adam" | lr 0.001
+[2019-05-29 09:26:13,040] Train metrics: loss: nan | losses.BodyDiceScore: nan | losses.TumorDiceScore: nan | grad: nan
+[2019-05-29 09:26:13,040] Valid metrics: loss: nan | losses.BodyDiceScore: nan | losses.TumorDiceScore: nan
+
+[2019-05-29 09:26:13,040] Epoch 3 | optimizer "Adam" | lr 0.001
+[2019-05-29 09:31:51,014] Train metrics: loss: nan | losses.BodyDiceScore: nan | losses.TumorDiceScore: nan | grad: nan
+[2019-05-29 09:31:51,014] Valid metrics: loss: nan | losses.BodyDiceScore: nan | losses.TumorDiceScore: nan
+
+[2019-05-29 09:31:51,015] Epoch 4 | optimizer "Adam" | lr 0.001
+[2019-05-29 09:34:31,924] Starting training with params:
+{'name': 'rn34_TverskyLoss/1', 'model': 'models_zoo.segmentation.resnet.MultiResnet34', 'model_params': {'num_filters': 64, 'pretrained': True, 'num_classes': 3}, 'loss': 'losses.TverskyLoss2D', 'loss_params': {'alpha': 0.6, 'beta': 0.4}, 'metrics': ['losses.BackgroundDiceScore', 'losses.BodyDiceScore', 'losses.TumorDiceScore'], 'steps_per_epoch': 1000, 'new_save': True, 'name_save': 'tt_1', 'save_dir': PosixPath('trained_models/weights/rn34_TverskyLoss/1')}
+
+
+[2019-05-29 09:34:32,092] Starting stage:
+{'load_best': False, 'optimizer': 'Adam', 'optimizer_params': {'lr': 0.001}, 'scheduler': 'ReduceLROnPlateau', 'scheduler_params': {'patience': 5, 'factor': 0.5, 'min_lr': 1e-06}, 'epochs': 300, 'augmentation': 'mix_transform'}
+
+[2019-05-29 09:34:32,093] Epoch 0 | optimizer "Adam" | lr 0.001
+[2019-05-29 09:40:43,171] Train metrics: loss: 2.00723 | losses.BackgroundDiceScore: 0.99328 | losses.BodyDiceScore: 0.00007 | losses.TumorDiceScore: 0.00000 | grad: 0.00611
+[2019-05-29 09:40:43,172] Valid metrics: loss: nan | losses.BackgroundDiceScore: 0.99590 | losses.BodyDiceScore: 0.57143 | losses.TumorDiceScore: 0.85714
+
+[2019-05-29 09:40:49,671] Epoch 1 | optimizer "Adam" | lr 0.001
+[2019-05-29 09:46:39,827] Train metrics: loss: 2.00525 | losses.BackgroundDiceScore: 0.99562 | losses.BodyDiceScore: 0.00000 | losses.TumorDiceScore: 0.00000 | grad: 0.00000
+[2019-05-29 09:46:39,828] Valid metrics: loss: nan | losses.BackgroundDiceScore: 0.99590 | losses.BodyDiceScore: 0.57143 | losses.TumorDiceScore: 0.85714
+
+[2019-05-29 09:46:39,828] Epoch 2 | optimizer "Adam" | lr 0.001

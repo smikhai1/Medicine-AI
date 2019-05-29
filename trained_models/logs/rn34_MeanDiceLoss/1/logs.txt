@@ -1,0 +1,12 @@
+[2019-05-28 16:10:50,322] Starting training with params:
+{'name': 'rn34_MeanDiceLoss/1', 'model': 'models_zoo.segmentation.resnet.MultiResnet34', 'model_params': {'num_filters': 64, 'pretrained': True, 'num_classes': 3}, 'loss': 'losses.MeanDiceLoss2D', 'loss_params': {}, 'metrics': ['losses.BodyDiceScore', 'losses.TumorDiceScore'], 'steps_per_epoch': 1000, 'new_save': True, 'name_save': 'tt_1', 'save_dir': PosixPath('trained_models/weights/rn34_MeanDiceLoss/1')}
+
+
+[2019-05-28 16:10:50,481] Starting stage:
+{'load_best': False, 'optimizer': 'Adam', 'optimizer_params': {'lr': 0.0001}, 'scheduler': 'ReduceLROnPlateau', 'scheduler_params': {'patience': 5, 'factor': 0.5, 'min_lr': 1e-06}, 'epochs': 300, 'augmentation': 'mix_transform'}
+
+[2019-05-28 16:10:50,481] Epoch 0 | optimizer "Adam" | lr 0.0001
+[2019-05-28 16:18:01,739] Train metrics: loss: -0.34039 | losses.BodyDiceScore: 0.00029 | losses.TumorDiceScore: 0.00002 | grad: 0.07623
+[2019-05-28 16:18:01,740] Valid metrics: loss: -0.40367 | losses.BodyDiceScore: 0.57143 | losses.TumorDiceScore: 0.85714
+
+[2019-05-28 16:18:08,248] Epoch 1 | optimizer "Adam" | lr 0.0001

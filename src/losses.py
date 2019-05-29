@@ -36,11 +36,13 @@ class DiceScore(nn.Module):
     def forward(self, input, target, num_classes=3):
         return dice_score(input, target, self.channel, num_classes)
 
+
 class BackgroundDiceScore(DiceScore):
     # for metrics
     def __init__(self, channel=0):
         super().__init__(channel)
         self.channel = channel
+
 
 class BodyDiceScore(DiceScore):
     # for metrics
@@ -48,12 +50,12 @@ class BodyDiceScore(DiceScore):
         super().__init__(channel)
         self.channel = channel
 
+
 class TumorDiceScore(DiceScore):
     # for metrics
     def __init__(self, channel=2):
         super().__init__(channel)
         self.channel = channel
-
 
 
 class CrossEntropyDiceLoss(nn.Module):
@@ -91,16 +93,18 @@ class GeneralizedDiceLoss2D(nn.Module):
         :param masks: tensor of shape batch_size x d1 x d2 ... x dk consists of class labels (integers) of each element
         :return:
         """
+
         EPS = 1e-10
 
         one_hot_masks = F.one_hot(masks, num_classes=3).to(torch.float32)
         probas = F.softmax(logits, dim=1)
         probas = probas.permute(0, 2, 3, 1)
 
-        #weights = (torch.sum(one_hot_masks, dim=(1, 2)))/ (torch.sum(one_hot_masks, dim=(1, 2, 3), keepdim=True) + EPS)
+        weights = 1.0 / (torch.pow(torch.sum(one_hot_masks, dim=(1, 2)), 2) + EPS)
 
-        intersection = torch.sum(probas * one_hot_masks)#, dim=(1, 2)) * weights
-        union = torch.sum(probas + one_hot_masks)#, dim=(1, 2)) * weights
+        intersection = torch.sum(torch.sum(probas * one_hot_masks, dim=(1, 2)) * weights)
+        union = torch.sum(torch.sum(probas + one_hot_masks, dim=(1, 2)) * weights)
+
         dice_loss =  1 - 2 * (intersection + EPS) / (union + EPS)
 
         return dice_loss
@@ -134,8 +138,6 @@ class MeanDiceLoss2D(nn.Module):
         dice_loss = 1 - 2 * (intersection + EPS) / (union + EPS)
 
         return torch.mean(dice_loss)
-
-
 
 
 class CrossEntropyLoss(nn.Module):
@@ -177,6 +179,7 @@ class TverskyLoss2D(nn.Module):
         T = torch.sum(num / denum)
 
         return 3 - T
+
 
 ######################################
 class BCELoss2d(nn.Module):

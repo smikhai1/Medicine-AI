@@ -47,7 +47,7 @@ class TestDataset(BaseDataset):
     def __getitem__(self, index):
         name = self.ids[index]
         image = cv2.imread(os.path.join(self.image_dir, name), 0)
-        mask = np.copy(image) # kostyl :)
+        mask = np.copy(image) # kostyl for inference :)
         return self.transform({'image': image, 'mask': mask})
 
 
@@ -74,7 +74,7 @@ class TaskDataFactory(DataFactory):
     def make_dataset(self, stage, is_train):
         transform = self.make_transform(stage, is_train)
         ids = self.train_ids if is_train else self.val_ids
-        return TrainDataset(
+        return TrainDataset3D(
             image_dir=self.data_path / self.paths['train_images'],
             mask_dir=self.data_path / self.paths['train_masks'],
             ids=ids,
@@ -103,3 +103,54 @@ class TaskDataFactory(DataFactory):
     @property
     def val_ids(self):
         return self.folds.loc[self.folds['fold'] == self.fold, 'ImageId'].values
+
+class TrainDataset3D(BaseDataset):
+
+    def __init__(self, image_dir, mask_dir, ids, transform):
+        super().__init__(image_dir, ids, transform)
+        self.transform = transform
+        self.ids = ids
+        self.image_dir = image_dir
+        self.mask_dir = mask_dir
+
+        self.NUM_SLICES = 96
+
+    def get_slices_idxs(self, num_slices):
+        return np.linspace(0, num_slices-1, self.NUM_SLICES).astype('int')
+
+    def __getitem__(self, idx):
+
+        image = np.load(os.path.join(self.image_dir, self.ids[idx] + '.npz'))['arr_0']
+        mask = np.load(os.path.join(self.mask_dir, self.ids[idx] + '.npz'))['arr_0']
+
+        num_slices = image.shape[2]
+
+        if num_slices <= self.NUM_SLICES:
+            image = image[:, :, self.get_slices_idxs]
+            mask = mask[:, :, self.get_slices_idxs]
+        else:
+            low_slice_id = int(0.2*num_slices)
+            high_slice_id = int(0.8*num_slices)
+
+            if high_slice_id - low_slice_id >= self.NUM_SLICES:
+                start_slice = np.random.randint(low_slice_id, high_slice_id - self.NUM_SLICES)
+            elif num_slices - low_slice_id >= self.NUM_SLICES:
+                start_slice = np.random.randint(low_slice_id, num_slices - self.NUM_SLICES)
+            else:
+                start_slice = np.random.randint(0, num_slices - self.NUM_SLICES)
+
+            image = image[:, :, start_slice:start_slice+self.NUM_SLICES]
+            mask = mask[:, :, start_slice:start_slice+self.NUM_SLICES]
+
+        assert (image.shape[2] != self.NUM_SLICES) or (mask.shape[2] != self.NUM_SLICES), \
+               'problems with z-dimension'
+
+        sample = {'image': image, 'mask': mask}
+
+        if self.transform:
+            sample = self.transform(sample)
+
+        return sample
+
+    def __len__(self):
+        return len(self.ids)

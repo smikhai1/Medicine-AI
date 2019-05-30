@@ -5,6 +5,7 @@ import nibabel as nib
 import cv2
 from glob import glob
 from argparse import ArgumentParser
+from tqdm import tqdm
 
 def convert_range(image, max_value, min_value):
 
@@ -53,6 +54,44 @@ def transform_data(source, destination, format='bmp'):
             slice_n_str = get_correct_idx(slice_n, len(str(num_slices)))
             cv2.imwrite(os.path.join(destination, 'images', f'{idx_str}_{slice_n_str}.{format}'), img_slice)
             np.savez(os.path.join(destination, 'masks', f'{idx_str}_{slice_n_str}'), mask_slice)
+
+def transform_3d_data(source, destination, val_size=0.1):
+    """
+    This function converts original dataset, which is a collection of
+    3D images and 3D masks in .nii format to 3D tensors and masks in .npz format.
+
+    :param source: path to the original dataset root directory, str
+    :param destination: path to the root directory of transformed dataset, str
+    :param format: format of output images, str
+    :return: None
+    """
+
+    img_paths = sorted(glob(os.path.join(source, 'imagesTr/*.gz')))
+    mask_paths = sorted(glob(os.path.join(source, 'labelsTr/*.gz')))
+    m = len(img_paths)
+
+    if not os.path.exists(os.path.join(destination, 'images')):
+        os.makedirs(os.path.join(destination, 'images'))
+
+    if not os.path.exists(os.path.join(destination, 'masks')):
+        os.makedirs(os.path.join(destination, 'masks'))
+
+    for idx in tqdm(range(len(img_paths))):
+        img = nib.load(img_paths[idx]).get_fdata()
+        mask = nib.load(mask_paths[idx]).get_fdata().astype(np.uint8)
+        idx_correct = get_correct_idx(idx, 3)
+        np.savez(os.path.join(destination, 'images', f'{idx_correct}'), img)
+        np.savez(os.path.join(destination, 'masks', f'{idx_correct}'), mask)
+
+    names = sorted(os.listdir(destination + '/images'))
+    names = list(map(lambda x: x.split('.')[0], names))
+    folds = np.zeros(m)
+    val_idxs = np.random.choice(m, replace=False, size=int(0.1 * m))
+    folds[val_idxs] = 1
+    df = pd.DataFrame(np.hstack((np.array(names), folds)), columns=['ImageId', 'fold'])
+    df['fold'] = pd.to_numeric(df['fold'])
+    df.to_csv(os.path.join(destination, 'folds.csv'), sep='\t')
+
 
 
 def split_data(path, split_ratio=0.15):

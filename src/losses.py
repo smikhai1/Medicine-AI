@@ -94,13 +94,13 @@ class GeneralizedDiceLoss2D(nn.Module):
         :return:
         """
 
-        EPS = 1e-10
+        EPS = 1e-8
 
         one_hot_masks = F.one_hot(masks, num_classes=3).to(torch.float32)
         probas = F.softmax(logits, dim=1)
         probas = probas.permute(0, 2, 3, 1)
 
-        weights = 1.0 / (torch.pow(torch.sum(one_hot_masks, dim=(1, 2)), 2) + EPS)
+        weights = 1.0 / (torch.pow(torch.sum(one_hot_masks, dim=(1, 2)), 1) + EPS)
 
         intersection = torch.sum(torch.sum(probas * one_hot_masks, dim=(1, 2)) * weights)
         union = torch.sum(torch.sum(probas + one_hot_masks, dim=(1, 2)) * weights)
@@ -114,7 +114,7 @@ class MeanDiceLoss2D(nn.Module):
 
     def __init__(self):
         """
-        Doesn't work!
+        Implementation of Mean Dice Loss from https://arxiv.org/pdf/1707.01992.pdf
         """
         super(MeanDiceLoss2D, self).__init__()
 
@@ -134,10 +134,23 @@ class MeanDiceLoss2D(nn.Module):
         probas = probas.permute(0, 2, 3, 1)
 
         intersection = torch.sum(probas * one_hot_masks, dim=(1, 2))
-        union = torch.sum(probas + one_hot_masks, dim=(1, 2))
-        dice_loss = 1 - 2 * (intersection + EPS) / (union + EPS)
+        union = torch.sum(torch.pow(probas, 2), dim=(1, 2)) + torch.sum(torch.pow(one_hot_masks, 2), dim=(1, 2))
+        dice_loss =  torch.mean(2 * (intersection + EPS) / (union + EPS), dim=1)
 
-        return torch.mean(dice_loss)
+        return -torch.mean(dice_loss)
+
+class CrossEntropyDiceLoss2D(nn.Module):
+
+    def __init__(self, dice_weight=0.7):
+        super(CrossEntropyDiceLoss2D, self).__init__()
+        self.dice_weight = dice_weight
+        self.ce_loss = CrossEntropyLoss()
+        self.dice_loss = MeanDiceLoss2D()
+
+    def forward(self, logits, targets):
+
+        return self.ce_loss(logits, targets) \
+               + self.dice_weight * self.dice_loss(logits, targets)
 
 
 class CrossEntropyLoss(nn.Module):

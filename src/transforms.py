@@ -21,6 +21,17 @@ class ToTensor(object):
                 'mask': torch.from_numpy(mask)
                 }
 
+
+class ToTensor3D(object):
+
+    def __call__(self, sample):
+        image, mask = sample['image'], sample['mask']
+        image = image[None, :, :, :]
+
+        return {'image': torch.from_numpy(image).to(torch.float32),
+                'mask': torch.from_numpy(mask)
+                }
+
 class RandomCrop(object):
     """Crop randomly the image in a sample.
 
@@ -85,6 +96,7 @@ class CenterCrop(object):
                     start_w:end_w
                    ]
 
+        assert len(image.shape)==3 or len(mask.shape)==3, 'One dimension was removed'
         return {'image': image, 'mask': mask}
 
 def pre_transform(resize):
@@ -97,7 +109,7 @@ def post_transform():
         #Normalize(
             #mean=(0.485, 0.456, 0.406),
             #std=(0.229, 0.224, 0.225)),
-        ToTensor()])
+        ToTensor3D()])
 
 def mix_transform(resize):
     return Compose([

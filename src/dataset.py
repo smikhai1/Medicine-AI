@@ -20,7 +20,6 @@ class BaseDataset(Dataset):
     def __getitem__(self, index):
         raise NotImplementedError
 
-
 class TrainDataset(BaseDataset):
     def __init__(self, image_dir, mask_dir, ids, transform):
         super().__init__(image_dir, ids, transform)
@@ -93,7 +92,7 @@ class TaskDataFactory(DataFactory):
     @property
     def folds(self):
         if self._folds is None:
-            self._folds = pd.read_csv(self.data_path / self.paths['folds'], sep='\t')
+            self._folds = pd.read_csv(self.data_path / self.paths['folds'], sep='\t', dtype={'ImageId':object})
         return self._folds
 
     @property
@@ -119,15 +118,14 @@ class TrainDataset3D(BaseDataset):
         return np.linspace(0, num_slices-1, self.NUM_SLICES).astype('int')
 
     def __getitem__(self, idx):
-
-        image = np.load(os.path.join(self.image_dir, self.ids[idx] + '.npz'))['arr_0']
-        mask = np.load(os.path.join(self.mask_dir, self.ids[idx] + '.npz'))['arr_0']
+        image = np.load(os.path.join(self.image_dir, self.ids[idx] + 'npz'))['arr_0']
+        mask = np.load(os.path.join(self.mask_dir, self.ids[idx] + 'npz'))['arr_0']
 
         num_slices = image.shape[2]
 
         if num_slices <= self.NUM_SLICES:
-            image = image[:, :, self.get_slices_idxs]
-            mask = mask[:, :, self.get_slices_idxs]
+            image = image[:, :, self.get_slices_idxs(num_slices)]
+            mask = mask[:, :, self.get_slices_idxs(num_slices)]
         else:
             low_slice_id = int(0.2*num_slices)
             high_slice_id = int(0.8*num_slices)
@@ -141,7 +139,7 @@ class TrainDataset3D(BaseDataset):
 
             image = image[:, :, start_slice:start_slice+self.NUM_SLICES]
             mask = mask[:, :, start_slice:start_slice+self.NUM_SLICES]
-
+        print(image.shape[2])
         assert (image.shape[2] != self.NUM_SLICES) or (mask.shape[2] != self.NUM_SLICES), \
                'problems with z-dimension'
 
